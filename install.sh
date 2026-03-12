@@ -159,13 +159,13 @@ download_and_configure() {
 	SECRET=$(generate_secret)
 
 	sed -e "s/ПОДСТАВЬТЕ_32_СИМВОЛА_HEX/${SECRET}/g" \
-	    -e "s/tls_domain = \"1c.ru\"/tls_domain = \"${FAKE_DOMAIN}\"/g" \
+	    -e "s/tls_domain = \"ya.ru\"/tls_domain = \"${FAKE_DOMAIN}\"/g" \
 	    "${INSTALL_DIR}/telemt.toml.example" > "${INSTALL_DIR}/telemt.toml"
 	rm -f "${INSTALL_DIR}/telemt.toml.example"
 	info "Создан ${INSTALL_DIR}/telemt.toml (домен маскировки: ${FAKE_DOMAIN})"
 
 	local tcp_yml="${INSTALL_DIR}/traefik/dynamic/tcp.yml"
-	sed -e "s/1c\.ru/${FAKE_DOMAIN}/g" \
+	sed -e "s/ya\.ru/${FAKE_DOMAIN}/g" \
 	    -e "s/telemt:1234/telemt:${TELEMT_INTERNAL_PORT}/g" \
 	    "$tcp_yml" > "${tcp_yml}.tmp" && mv "${tcp_yml}.tmp" "$tcp_yml"
 	info "Настроен Traefik: SNI ${FAKE_DOMAIN} -> telemt:${TELEMT_INTERNAL_PORT} (TLS passthrough)"
